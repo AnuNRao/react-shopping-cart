@@ -84,6 +84,7 @@ export default function MyApp() {
           <div className="card" key={product.id}>
             <Product
               product={product}
+              quantity={cart.find(i => i.id === product.id)?.quantity || 0}
               onAdd={handleAddClick}
               onRemove={handleRemoveClick}
             />
