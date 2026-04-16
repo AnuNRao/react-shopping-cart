@@ -1,30 +1,33 @@
-import { useState } from 'react';
-import ProductSummary from './ProductSummary';
-import Product from './Product';
+import { useState, useEffect } from 'react';
+import ProductSummary from './components/ProductDisplay/ProductSummary';
+import Product from './components/ProductDisplay/Product';
 import './App.css';
+import { fetchProducts } from './components/ProductDisplay/ProductService';
+import type { ApiProductResponse } from './types.';
 
-type ProductType = {
-  id: number;
-  name: string;
-  price: number;
-};
 
-type CartItem = ProductType & {
+type CartItem = ApiProductResponse & {
   quantity: number;
 };
 
 export default function MyApp() {
   const [cart, setCart] = useState<CartItem[]>([]);
-
-  const products: ProductType[] = [
-    { name: "Laptop", id: 1, price: 1000 },
-    { name: "Phone", id: 2, price: 500 },
-    { name: "Ipad", id: 3, price: 700 },
-    { name: "Airpods", id: 4, price: 200 },
-
-  ];
-
-  function handleAddClick(product: ProductType) {
+  const [products, setProductsData] = useState<ApiProductResponse[]>([]);
+  useEffect(()=>{
+    async function loadProducts(){
+      try{
+        const data = await fetchProducts();
+        setProductsData(data);
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+    loadProducts();
+  }, [])
+  
+  
+  function handleAddClick(product: ApiProductResponse) {
     setCart(prevCart => {
       const existing = prevCart.find(item => item.id === product.id);
 
@@ -40,7 +43,7 @@ export default function MyApp() {
     });
   }
 
-  function handleRemoveClick(product: ProductType) {
+  function handleRemoveClick(product: ApiProductResponse) {
     setCart(prevCart => {
       const existing = prevCart.find(item => item.id === product.id);
 
@@ -95,7 +98,7 @@ export default function MyApp() {
 
         {cart.map(item => (
           <div className="cartItem" key={item.id}>
-            {item.name} - Qty: {item.quantity} - ${item.price}
+            {item.title} - Qty: {item.quantity} - ${item.price}
           </div>
         ))}
       </div>
