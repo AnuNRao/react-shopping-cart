@@ -11,22 +11,33 @@ type CartItem = ApiProductResponse & {
 };
 
 export default function MyApp() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem("cart");
+    return saved ? JSON.parse(saved) as CartItem[] : [];
+  });
   const [products, setProductsData] = useState<ApiProductResponse[]>([]);
-  useEffect(()=>{
-    async function loadProducts(){
-      try{
+  useEffect(() => {
+    async function loadProducts() {
+      try {
         const data = await fetchProducts();
         setProductsData(data);
-      }
-      catch(error){
-        console.log(error);
+      } catch (err) {
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
       }
     }
+
     loadProducts();
-  }, [])
-  
-  
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart])
+
+
   function handleAddClick(product: ApiProductResponse) {
     setCart(prevCart => {
       const existing = prevCart.find(item => item.id === product.id);
@@ -68,6 +79,21 @@ export default function MyApp() {
     0
   );
 
+  const cartMap = new Map(cart.map(item => [item.id, item.quantity]));
+
+  function getQuantity(productId: number) {
+    return cartMap.get(productId) || 0;
+  }
+
+
+  if (loading) {
+    return <p>Loading products...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div className="page">
       <h1 className="title">🛒 Shopping Cart</h1>
@@ -84,7 +110,7 @@ export default function MyApp() {
           <div className="card" key={product.id}>
             <Product
               product={product}
-              quantity={cart.find(i => i.id === product.id)?.quantity || 0}
+              quantity={getQuantity(product.id)}
               onAdd={handleAddClick}
               onRemove={handleRemoveClick}
             />

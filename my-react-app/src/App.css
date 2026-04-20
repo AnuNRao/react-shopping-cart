@@ -116,3 +116,30 @@
   padding: 20px;
   border-radius: 12px;
 }
+
+.removeBtn:disabled{
+  cursor:not-allowed;
+  opacity: 0.4;
+}
+
+.badge {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.productCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.productCard:hover {
+  transform: translateY(-6px);
+}
+
+button:active {
+  transform: scale(0.96);
+}
