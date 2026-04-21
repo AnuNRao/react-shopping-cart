@@ -109,6 +109,16 @@ npm run dev
 
 > Simple and clean shopping cart UI with product cards and cart summary.
 
+## Key Features
+
+  - Products are displayed in a grid.
+  - Clicking 'Add' adds items or increases quantity.
+  - Clicking 'Remove' decreases quantity or removes the item.
+  - Cart summary updates automatically.
+
+Live Demo: https://react-shopping-cart-two-gamma.vercel.app/
+
+
 ---
 
 ## Contributing
