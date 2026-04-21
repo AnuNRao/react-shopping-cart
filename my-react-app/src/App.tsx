@@ -1,83 +1,11 @@
-import { useState, useEffect } from 'react';
 import ProductSummary from './components/ProductDisplay/ProductSummary';
 import Product from './components/ProductDisplay/Product';
 import './App.css';
-import { fetchProducts } from './components/ProductDisplay/ProductService';
-import type { ApiProductResponse } from './types.';
-
-
-type CartItem = ApiProductResponse & {
-  quantity: number;
-};
-
+import { useCart } from './hooks/useCart.ts';
+import { useProducts } from './hooks/useProduct.ts';
 export default function MyApp() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) as CartItem[] : [];
-  });
-  const [products, setProductsData] = useState<ApiProductResponse[]>([]);
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const data = await fetchProducts();
-        setProductsData(data);
-      } catch (err) {
-        setError("Failed to load products");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadProducts();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart])
-
-
-  function handleAddClick(product: ApiProductResponse) {
-    setCart(prevCart => {
-      const existing = prevCart.find(item => item.id === product.id);
-
-      if (existing) {
-        return prevCart.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
-  }
-
-  function handleRemoveClick(product: ApiProductResponse) {
-    setCart(prevCart => {
-      const existing = prevCart.find(item => item.id === product.id);
-
-      if (!existing) return prevCart;
-
-      if (existing.quantity === 1) {
-        return prevCart.filter(item => item.id !== product.id);
-      }
-
-      return prevCart.map(item =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      );
-    });
-  }
-
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-  const totalPrice = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const { cart, addToCart, removeFromCart, totalItems, totalPrice } = useCart();
+  const { products, loading, error } = useProducts();
 
   const cartMap = new Map(cart.map(item => [item.id, item.quantity]));
 
@@ -111,8 +39,8 @@ export default function MyApp() {
             <Product
               product={product}
               quantity={getQuantity(product.id)}
-              onAdd={handleAddClick}
-              onRemove={handleRemoveClick}
+              onAdd={addToCart}
+              onRemove={removeFromCart}
             />
           </div>
         ))}
@@ -125,7 +53,7 @@ export default function MyApp() {
 
         {cart.map(item => (
           <div className="cartItem" key={item.id}>
-            {item.title} - Qty: {item.quantity} - ${item.price}
+            {item.title} - Qty: {item.quantity} - ${item.price.toFixed(2)}
           </div>
         ))}
       </div>
