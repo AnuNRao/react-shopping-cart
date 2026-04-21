@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ApiProductResponse } from '../../types.';
+import type { ApiProductResponse } from '../../types';
 
 
 //Api call to get list of products
