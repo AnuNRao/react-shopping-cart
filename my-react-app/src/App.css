@@ -143,3 +143,25 @@
 button:active {
   transform: scale(0.96);
 }
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full screen height */
+}
+
+.loader {
+  border: 6px solid #ddd;
+  border-top: 6px solid #4f46e5; /* nice blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
