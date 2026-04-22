@@ -3,15 +3,24 @@ import Product from './components/ProductDisplay/Product';
 import './App.css';
 import { useCart } from './hooks/useCart.ts';
 import { useProducts } from './hooks/useProduct.ts';
+import { useMemo, useCallback } from 'react';
 export default function MyApp() {
   const { cart, addToCart, removeFromCart, totalItems, totalPrice } = useCart();
   const { products, loading, error } = useProducts();
 
-  const cartMap = new Map(cart.map(item => [item.id, item.quantity]));
+  const cartMap = useMemo(() => {
+    return new Map(cart.map(item => [item.id, item.quantity]));
+  }, [cart]);
 
-  function getQuantity(productId: number) {
+  // const cartMap = new Map(cart.map(item => [item.id, item.quantity]));
+
+  const getQuantity = useCallback((productId: number)=>{
     return cartMap.get(productId) || 0;
-  }
+  }, [cartMap])
+
+  // function getQuantity(productId: number) {
+  //   return cartMap.get(productId) || 0;
+  // }
 
   if (loading) {
   return (

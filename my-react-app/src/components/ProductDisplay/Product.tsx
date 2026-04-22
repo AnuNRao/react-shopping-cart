@@ -1,3 +1,4 @@
+import React from "react";
 import type { ApiProductResponse } from "../../types";
 
 
@@ -8,7 +9,7 @@ type Props = {
   quantity: number;
 };
 
-export default function Product({ product, onAdd, onRemove, quantity }: Props) {
+function Product({ product, onAdd, onRemove, quantity }: Props) {
   return (
     <div className="productCard">
       <img
@@ -38,3 +39,5 @@ export default function Product({ product, onAdd, onRemove, quantity }: Props) {
     </div>
   );
 }
+
+export default React.memo(Product);
