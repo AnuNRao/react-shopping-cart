@@ -13,10 +13,13 @@ export default function MyApp() {
     return cartMap.get(productId) || 0;
   }
 
-
   if (loading) {
-    return <p>Loading products...</p>;
-  }
+  return (
+    <div className="loaderContainer">
+      <div className="loader"></div>
+    </div>
+  );
+}
 
   if (error) {
     return <p>{error}</p>;
