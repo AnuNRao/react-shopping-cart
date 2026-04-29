@@ -117,7 +117,7 @@
   border-radius: 12px;
 }
 
-.removeBtn:disabled{
+.removeBtn:disabled, .clearBtn:disabled{
   cursor:not-allowed;
   opacity: 0.4;
 }
@@ -164,4 +164,31 @@ button:active {
   to {
     transform: rotate(360deg);
   }
+}
+
+.clearBtn {
+  background: #ef4444; /* red */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.clearBtn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.summaryBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summaryActions {
+  display: flex;
+  align-items: center;
 }
