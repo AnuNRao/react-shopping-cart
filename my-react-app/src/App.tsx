@@ -5,7 +5,7 @@ import { useCart } from './hooks/useCart.ts';
 import { useProducts } from './hooks/useProduct.ts';
 import { useMemo, useCallback } from 'react';
 export default function MyApp() {
-  const { cart, addToCart, removeFromCart, totalItems, totalPrice } = useCart();
+  const { cart, addToCart, removeFromCart, totalItems, totalPrice, clearCart } = useCart();
   const { products, loading, error } = useProducts();
 
   const cartMap = useMemo(() => {
@@ -14,7 +14,7 @@ export default function MyApp() {
 
   // const cartMap = new Map(cart.map(item => [item.id, item.quantity]));
 
-  const getQuantity = useCallback((productId: number)=>{
+  const getQuantity = useCallback((productId: number) => {
     return cartMap.get(productId) || 0;
   }, [cartMap])
 
@@ -23,12 +23,12 @@ export default function MyApp() {
   // }
 
   if (loading) {
-  return (
-    <div className="loaderContainer">
-      <div className="loader"></div>
-    </div>
-  );
-}
+    return (
+      <div className="loaderContainer">
+        <div className="loader"></div>
+      </div>
+    );
+  }
 
   if (error) {
     return <p>{error}</p>;
@@ -43,6 +43,11 @@ export default function MyApp() {
           totalItems={totalItems}
           totalPrice={totalPrice}
         />
+        <div className="summaryActions">
+          <button disabled={cart.length === 0} onClick={clearCart} className="clearBtn">
+            Clear Cart
+          </button>
+        </div>
       </div>
 
       <div className="productGrid">
