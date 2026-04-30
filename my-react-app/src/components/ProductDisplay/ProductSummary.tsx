@@ -2,7 +2,7 @@ function ProductSummary({ totalItems, totalPrice } : {totalItems: number, totalP
   return (
     <div style={{ marginBottom: "20px" }}>
       <h2>Total Items in Cart: {totalItems}</h2>
-      <h2>Total Price: ${totalPrice}</h2>
+      <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
     </div>
   );
 }
