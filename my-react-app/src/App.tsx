@@ -1,26 +1,21 @@
 import ProductSummary from './components/ProductDisplay/ProductSummary';
 import Product from './components/ProductDisplay/Product';
 import './App.css';
-import { useCart } from './hooks/useCart.ts';
+import { useCartContext } from './cartContext.tsx';
 import { useProducts } from './hooks/useProduct.ts';
-import { useMemo, useCallback } from 'react';
+import Navbar from './NavBar.tsx';
+import { useMemo, useState } from 'react';
+
 export default function MyApp() {
-  const { cart, addToCart, removeFromCart, totalItems, totalPrice, clearCart } = useCart();
+  const { cart, totalItems, totalPrice, clearCart } = useCartContext();
   const { products, loading, error } = useProducts();
+  const [search, setSearch] = useState("");
 
-  const cartMap = useMemo(() => {
-    return new Map(cart.map(item => [item.id, item.quantity]));
-  }, [cart]);
-
-  // const cartMap = new Map(cart.map(item => [item.id, item.quantity]));
-
-  const getQuantity = useCallback((productId: number) => {
-    return cartMap.get(productId) || 0;
-  }, [cartMap])
-
-  // function getQuantity(productId: number) {
-  //   return cartMap.get(productId) || 0;
-  // }
+  const filteredProducts = useMemo(() => {
+    return products.filter(product =>
+      product.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [products, search]);
 
   if (loading) {
     return (
@@ -36,34 +31,42 @@ export default function MyApp() {
 
   return (
     <div className="page">
-      <h1 className="title">🛒 Shopping Cart</h1>
+      <Navbar />
+
+      <h1 className="title">Explore Products</h1>
+
+      <input
+        type="text"
+        placeholder="Search Products..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="searchInput"
+      />
 
       <div className="summaryBox">
         <ProductSummary
           totalItems={totalItems}
           totalPrice={totalPrice}
         />
+
         <div className="summaryActions">
-          <button disabled={cart.length === 0} onClick={clearCart} className="clearBtn">
+          <button
+            disabled={cart.length === 0}
+            onClick={clearCart}
+            className="clearBtn"
+          >
             Clear Cart
           </button>
         </div>
       </div>
 
       <div className="productGrid">
-        {products.map(product => (
-          <div className="card" key={product.id}>
-            <Product
-              product={product}
-              quantity={getQuantity(product.id)}
-              onAdd={addToCart}
-              onRemove={removeFromCart}
-            />
-          </div>
+        {filteredProducts.map(product => (
+          <Product key={product.id} product={product} />
         ))}
       </div>
 
-      <h2>Cart Items</h2>
+      <h2 className="title">Cart Items</h2>
 
       <div className="cartBox">
         {cart.length === 0 && <p>No items in cart</p>}

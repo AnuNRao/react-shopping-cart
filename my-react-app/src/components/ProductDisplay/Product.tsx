@@ -1,43 +1,34 @@
-import React from "react";
+import { useCartContext } from "../../cartContext";
 import type { ApiProductResponse } from "../../types";
-
 
 type Props = {
   product: ApiProductResponse;
-  onAdd: (product: ApiProductResponse) => void;
-  onRemove: (product: ApiProductResponse) => void;
-  quantity: number;
 };
 
-function Product({ product, onAdd, onRemove, quantity }: Props) {
+export default function Product({ product }: Props) {
+  const { addToCart, removeFromCart, cart } = useCartContext();
+
+  const quantity =
+    cart.find(i => i.id === product.id)?.quantity ?? 0;
+
   return (
     <div className="productCard">
-      <img
-        src={product.image}
-        alt={product.title}
-        className="productImage"
-      />
-
-      {quantity > 0 && (
-        <span className="badge">In Cart: {quantity}</span>
-      )}
+      <img src={product.image} alt={product.title} />
 
       <h3 className="productTitle">{product.title}</h3>
 
-      <p className="productPrice">${product.price.toFixed(2)}</p>
-
-      <p className="qty">Quantity: {quantity}</p>
-
-      <div className="buttonRow">
-        <button className="addBtn" onClick={() => onAdd(product)}>
-          Add to Cart
+      <div className="qtyControls">
+        <button
+          onClick={() => removeFromCart(product)}
+          disabled={quantity === 0}
+        >
+          -
         </button>
-        <button disabled={quantity === 0} className="removeBtn" onClick={() => onRemove(product)}>
-          Remove
-        </button>
+
+        <span className="qty">{quantity}</span>
+
+        <button onClick={() => addToCart(product)}>+</button>
       </div>
     </div>
   );
 }
-
-export default React.memo(Product);
