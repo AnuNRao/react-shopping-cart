@@ -5,6 +5,7 @@ import { useCartContext } from './cartContext.tsx';
 import { useProducts } from './hooks/useProduct.ts';
 import Navbar from './NavBar.tsx';
 import { useMemo, useState } from 'react';
+import SkeletonCard from './skeleton.tsx';
 
 export default function MyApp() {
   const { cart, totalItems, totalPrice, clearCart } = useCartContext();
@@ -18,12 +19,17 @@ export default function MyApp() {
   }, [products, search]);
 
   if (loading) {
-    return (
-      <div className="loaderContainer">
-        <div className="loader"></div>
+  return (
+    <div className="page">
+      <Navbar />
+      <div className="productGrid">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (error) {
     return <p>{error}</p>;
@@ -34,7 +40,7 @@ export default function MyApp() {
       <Navbar />
 
       <h1 className="title">Explore Products</h1>
-
+        {filteredProducts.length === 0 && <p>No Products Found</p>}
       <input
         type="text"
         placeholder="Search Products..."
