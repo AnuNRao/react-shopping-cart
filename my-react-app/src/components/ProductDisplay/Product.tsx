@@ -1,5 +1,6 @@
 import { useCartContext } from "../../cartContext";
 import type { ApiProductResponse } from "../../types";
+import { useToast } from "../../ToastContext";
 
 type Props = {
   product: ApiProductResponse;
@@ -7,7 +8,7 @@ type Props = {
 
 export default function Product({ product }: Props) {
   const { addToCart, removeFromCart, cart } = useCartContext();
-
+  const { showToast } = useToast();
   const quantity =
     cart.find(i => i.id === product.id)?.quantity ?? 0;
 
@@ -19,7 +20,10 @@ export default function Product({ product }: Props) {
 
       <div className="qtyControls">
         <button className="reduceQty"
-          onClick={() => removeFromCart(product)}
+          onClick={() => {
+            removeFromCart(product);
+            showToast("Removed from cart", "error");
+          }}
           disabled={quantity === 0}
         >
           -
@@ -27,7 +31,14 @@ export default function Product({ product }: Props) {
 
         <span className="qty">{quantity}</span>
 
-        <button onClick={() => addToCart(product)}>+</button>
+        <button
+          onClick={() => {
+            addToCart(product);
+            showToast("Added to cart", "success");
+          }}
+        >
+          +
+        </button>
       </div>
     </div>
   );

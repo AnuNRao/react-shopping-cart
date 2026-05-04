@@ -86,6 +86,14 @@
   gap: 20px;
 }
 
+.qty {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+  min-width: 24px;
+  text-align: center;
+}
+
 .qtyControls {
   display: flex;
   align-items: center;
@@ -108,8 +116,6 @@
   align-items: center;
   justify-content: center;
 }
-
-/* Skeleton base */
 /* SHIMMER BASE */
 .skeleton {
   position: relative;
@@ -159,5 +165,40 @@
 .skeletonButtons {
   height: 30px;
   width: 60%;
+}
+
+/* Toast container */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 999;
+  animation: slideIn 0.3s ease;
+}
+
+/* Success */
+.toast.success {
+  background: #22c55e;
+}
+
+/* Error */
+.toast.error {
+  background: #ef4444;
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
