@@ -18,7 +18,7 @@ export default function Product({ product }: Props) {
       <h3 className="productTitle">{product.title}</h3>
 
       <div className="qtyControls">
-        <button
+        <button className="reduceQty"
           onClick={() => removeFromCart(product)}
           disabled={quantity === 0}
         >

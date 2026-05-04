@@ -54,7 +54,7 @@
   background: #dc2626;
 }
 
-.clearBtn:disabled {
+.clearBtn:disabled , .reduceQty:disabled{
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -64,7 +64,6 @@
   border-radius: 12px;
   padding: 16px;
   border: 1px solid #e5e7eb;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,3 +108,56 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Skeleton base */
+/* SHIMMER BASE */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+
+/* SHIMMER EFFECT */
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ANIMATION */
+@keyframes shimmer {
+  0% {
+    left: -150px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+.skeletonImage {
+  height: 120px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.skeletonText {
+  height: 14px;
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+.skeletonButtons {
+  height: 30px;
+  width: 60%;
+}
+
