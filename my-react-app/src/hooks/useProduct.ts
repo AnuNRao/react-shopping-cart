@@ -10,7 +10,7 @@ export function useProducts() {
   useEffect(() => {
   async function loadProducts() {
     try {
-      await new Promise(res => setTimeout(res, 2000)); // 👈 add this
+      await new Promise(res => setTimeout(res, 2000));
       const data = await fetchProducts();
       setProductsData(data);
     } catch (err) {
