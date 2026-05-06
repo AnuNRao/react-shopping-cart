@@ -1,7 +1,3 @@
-Here is a revised version of the README for your [react-shopping-cart](https://github.com/AnuNRao/react-shopping-cart/blob/main/my-react-app/client/README.md) that emphasizes the transition to a decoupled architecture and the new UX features.
-
----
-
 # 🛒 Modern Shopping Cart (Full-Stack Prep)
 
 A robust e-commerce application built with the **MERN** stack (currently featuring a Node/Express logic layer). This project demonstrates a clean separation of concerns between a React frontend and a functional Node.js backend.
