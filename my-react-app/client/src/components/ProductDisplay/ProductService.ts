@@ -4,7 +4,7 @@ import type { ApiProductResponse } from '../../types';
 
 //Api call to get list of products
 export async function fetchProducts(): Promise<ApiProductResponse[]>{
-    const response = await axios.get("https://fakestoreapi.com/products");
+    const response = await axios.get("/api/products");
     return response.data;
 }
 
